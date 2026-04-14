@@ -1,0 +1,56 @@
+*vim-ai-provider-openrouter.txt* Plugin for OpenRouter AI models
+
+	vim-ai-provider-openrouter~
+	
+	Author: notweerdmonk
+	License: MIT
+	
+	                                                    *openrouter-intro*
+	INTRODUCTION ~
+	
+	This plugin provides OpenRouter provider support for vim-ai.
+	OpenRouter provides unified access to 200+ AI models from various providers.
+	
+	                                                    *openrouter-setup*
+	SETUP ~
+	
+	Get your API key from https://openrouter.ai/keys
+	
+	Set OPENROUTER_API_KEY environment variable:
+>
+	  export OPENROUTER_API_KEY="your-api-key"
+<
+	Or use token_file_path in your role configuration.
+	
+	                                                    *openrouter-options*
+	OPTIONS ~
+	
+	g:vim_ai_openrouter_config  (dict)
+	  Default configuration for OpenRouter provider.
+	
+	  Available options:
+	  - model (string): Model ID (default: anthropic/claude-3.5-sonnet)
+	  - endpoint_url (string): API endpoint
+	  - request_timeout (number): Request timeout in seconds
+	  - site_url (string): HTTP-Referer header (default: vim-ai)
+	  - site_name (string): X-OpenRouter-Title header (default: vim-ai)
+	  - temperature (number): Sampling temperature
+	  - max_tokens (number): Maximum tokens to generate
+	  - reasoning (object): Reasoning configuration
+	  - transforms (list): List of transforms
+	  - provider (object): Provider routing preferences
+	
+	                                                    *openrouter-usage*
+	USAGE ~
+	
+	Define a role in your roles configuration file:
+>
+	  [openrouter]
+	  provider = openrouter
+	  options.model = anthropic/claude-3.5-sonnet
+<
+	Then use in Vim:
+>
+	  :AIChat /openrouter your question
+<
+vim:tw=78:ts=8:ft=help:norl:fdm=marker
