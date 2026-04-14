@@ -8,7 +8,7 @@
 
 ```vim
 Plug 'madox2/vim-ai'
-Plug 'madox2/vim-ai-provider-openrouter'
+Plug 'notweerdmonk/vim-ai-provider-openrouter'
 ```
 
 ### API key
@@ -113,4 +113,4 @@ options.transforms = ["deepthink"]
 
 ## License
 
-[MIT License](https://github.com/madox2/vim-ai-provider-openrouter/blob/main/LICENSE)
+[MIT License](https://github.com/notweeerdmonk/vim-ai-provider-openrouter/blob/main/LICENSE)
