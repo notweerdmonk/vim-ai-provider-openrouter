@@ -33,7 +33,7 @@ Initial release of vim-ai-provider-openrouter plugin.
 
 ```vim
 Plug 'madox2/vim-ai'
-Plug 'madox2/vim-ai-provider-openrouter'
+Plug 'notweerdmonk/vim-ai-provider-openrouter'
 ```
 
 ### API Key
