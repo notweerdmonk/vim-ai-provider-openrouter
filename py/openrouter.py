@@ -1,5 +1,6 @@
 import vim
 import json
+import urllib.error
 import urllib.request
 from collections.abc import Sequence, Mapping, Iterator
 from typing import TypedDict, Literal, Union, List, Protocol, Any
@@ -260,12 +261,27 @@ class OpenRouterProvider:
         )
 
         proxy_settings = self.utils.get_proxy_settings()
-        if proxy_settings:
-            proxy_handler = urllib.request.ProxyHandler(proxy_settings)
-            opener = urllib.request.build_opener(proxy_handler)
-            response = opener.open(req, timeout=request_timeout)
-        else:
-            response = urllib.request.urlopen(req, timeout=request_timeout)
+        try:
+            if proxy_settings:
+                proxy_handler = urllib.request.ProxyHandler(proxy_settings)
+                opener = urllib.request.build_opener(proxy_handler)
+                response = opener.open(req, timeout=request_timeout)
+            else:
+                response = urllib.request.urlopen(req, timeout=request_timeout)
+        except urllib.error.HTTPError as e:
+            error_body = e.read().decode("utf-8", errors="replace")
+            try:
+                error_json = json.loads(error_body)
+                error_msg = error_json.get("error", {}).get("message", error_body)
+            except json.JSONDecodeError:
+                error_msg = error_body
+            raise self.utils.make_known_error(f"OpenRouter HTTP {e.code}: {error_msg}")
+        except urllib.error.URLError as e:
+            raise self.utils.make_known_error(f"OpenRouter network error: {e.reason}")
+        except TimeoutError:
+            raise self.utils.make_known_error(
+                f"OpenRouter request timed out after {request_timeout} seconds"
+            )
 
         with response:
             if not data.get("stream", 0):
